@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { supabaseWithErrorHandling } from "../lib/supabase";
+// import { supabaseWithErrorHandling } from "../lib/supabase";
 import Link from "next/link";
 import { Users, Calendar, Megaphone, Bell, Briefcase } from "lucide-react";
 
