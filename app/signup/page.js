@@ -49,7 +49,7 @@ export default function SignupPage() {
         icon: "success",
         title: "Signup Successful",
         text: "Please check your email to confirm your account",
-        confirmButtonColor: "#16a34a"
+        confirmButtonColor: "#10b981"
       });
 
       router.push("/login");
@@ -60,7 +60,7 @@ export default function SignupPage() {
         icon: "error",
         title: "Signup Failed",
         text: userFriendlyError,
-        confirmButtonColor: "#b91c1c",
+        confirmButtonColor: "#ef4444",
       });
     } finally {
       setLoading(false);
@@ -68,59 +68,53 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-tr from-green-900 via-green-700 to-green-500 py-16">
-      <div className="bg-white/70 backdrop-blur-md p-10 rounded-3xl shadow-2xl w-full max-w-md border border-green-200">
-        <h1 className="text-4xl font-extrabold text-center text-green-900 mb-6 animate-fadeInDown">Create an Account</h1>
-        <p className="text-center text-gray-700 mb-8 animate-fadeInUp">Join our platform to manage your taxes easily and securely.</p>
+    <div className="min-h-screen flex items-center justify-center bg-gray-900">
+      <div className="bg-gray-800/80 backdrop-blur-md p-10 rounded-3xl shadow-2xl w-full max-w-md border border-gray-700">
+        <h1 className="text-4xl font-extrabold text-center text-gray-100 mb-6">Create an Account</h1>
+        <p className="text-center text-gray-400 mb-8">Join our platform to manage your taxes efficiently.</p>
 
         <form onSubmit={handleSignup} className="space-y-5">
-          <div className="relative">
-            <input
-              type="text"
-              placeholder="Full Name"
-              value={fullName}
-              onChange={e => setFullName(e.target.value)}
-              required
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition"
-            />
-          </div>
-          <div className="relative">
-            <input
-              type="email"
-              placeholder="Email"
-              value={email}
-              onChange={e => setEmail(e.target.value)}
-              required
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition"
-            />
-          </div>
-          <div className="relative">
-            <input
-              type="password"
-              placeholder="Password"
-              value={password}
-              onChange={e => setPassword(e.target.value)}
-              required
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition"
-            />
-          </div>
+          {error && <p className="text-red-500 text-center">{error}</p>}
 
-          {error && <p className="text-red-600 text-sm animate-fadeIn">{error}</p>}
+          <input
+            type="text"
+            value={fullName}
+            onChange={e => setFullName(e.target.value)}
+            placeholder="Full Name"
+            className="w-full px-4 py-3 bg-gray-900 text-gray-100 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 transition"
+            required
+          />
+
+          <input
+            type="email"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+            placeholder="Email"
+            className="w-full px-4 py-3 bg-gray-900 text-gray-100 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 transition"
+            required
+          />
+
+          <input
+            type="password"
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+            placeholder="Password"
+            className="w-full px-4 py-3 bg-gray-900 text-gray-100 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 transition"
+            required
+          />
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-green-700 hover:bg-green-800 text-white font-semibold py-3 rounded-xl transition duration-200 disabled:opacity-50"
+            className="w-full bg-emerald-500 hover:bg-emerald-600 text-gray-900 font-semibold py-3 rounded-xl transition disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? "Signing up..." : "Sign Up"}
           </button>
         </form>
 
-        <p className="mt-6 text-center text-gray-700">
+        <p className="mt-6 text-center text-gray-400">
           Already have an account?{" "}
-          <a href="/login" className="text-green-900 font-semibold hover:underline">
-            Login
-          </a>
+          <a href="/login" className="text-emerald-500 font-semibold hover:underline">Login</a>
         </p>
       </div>
     </div>
