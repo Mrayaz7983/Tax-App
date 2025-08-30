@@ -1,103 +1,141 @@
-import Image from "next/image";
-
 export default function Home() {
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              app/page.js
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <main className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-700 text-white">
+      {/* Top bar */}
+      <header className="max-w-6xl mx-auto px-4 py-5 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <span className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-500/20 ring-1 ring-emerald-400/30">
+            <span className="text-xl font-black text-emerald-300">T</span>
+          </span>
+          <span className="font-semibold tracking-wide">TaxConsult</span>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
+        <nav className="hidden sm:flex items-center gap-6 text-sm text-slate-200">
+          <a href="#services" className="hover:text-white">Services</a>
+          <a href="#why" className="hover:text-white">Why Us</a>
+          <a href="#contact" className="hover:text-white">Contact</a>
+          <a href="/login" className="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 transition">Login</a>
+          <a href="/signup" className="px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white transition">Sign Up</a>
+        </nav>
+      </header>
+
+      {/* Hero */}
+      <section className="max-w-6xl mx-auto px-4 py-16 md:py-24">
+        <div className="grid md:grid-cols-2 gap-10 items-center">
+          <div>
+            <h1 className="text-4xl md:text-5xl font-extrabold leading-tight">
+              Smart <span className="text-emerald-400">Tax Consultancy</span> for
+              Businesses & Individuals
+            </h1>
+            <p className="mt-4 text-slate-200/80">
+              NTN registration, return filing, compliance & audit assistance — sab kuch
+              ek dashboard se. Secure, fast, and hassle-free.
+            </p>
+            <div className="mt-8 flex flex-wrap gap-4">
+              <a href="/signup" className="px-6 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-600 font-semibold transition">
+                Get Started
+              </a>
+              <a href="/login" className="px-6 py-3 rounded-xl bg-white/10 hover:bg-white/20 font-semibold transition">
+                Admin / Client Login
+              </a>
+            </div>
+
+            <div className="mt-8 grid grid-cols-3 gap-6 text-center">
+              <div className="rounded-xl bg-white/5 p-4 ring-1 ring-white/10">
+                <div className="text-2xl font-bold">5k+</div>
+                <div className="text-xs text-slate-200/70">Returns Filed</div>
+              </div>
+              <div className="rounded-xl bg-white/5 p-4 ring-1 ring-white/10">
+                <div className="text-2xl font-bold">98%</div>
+                <div className="text-xs text-slate-200/70">On-time Compliance</div>
+              </div>
+              <div className="rounded-xl bg-white/5 p-4 ring-1 ring-white/10">
+                <div className="text-2xl font-bold">24/7</div>
+                <div className="text-xs text-slate-200/70">Support</div>
+              </div>
+            </div>
+          </div>
+
+          <div className="relative">
+            <div className="absolute -inset-6 -z-10 bg-emerald-500/20 blur-3xl rounded-full" />
+            <div className="rounded-2xl bg-white/5 ring-1 ring-white/10 p-6 backdrop-blur">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="rounded-xl bg-slate-900/60 p-4">
+                  <div className="text-sm text-slate-300">Client Overview</div>
+                  <div className="mt-3 text-3xl font-bold">Ali Khan</div>
+                  <div className="text-xs text-slate-400">NTN: 1234567</div>
+                </div>
+                <div className="rounded-xl bg-slate-900/60 p-4">
+                  <div className="text-sm text-slate-300">Status</div>
+                  <div className="mt-3 text-3xl font-bold text-emerald-400">Compliant</div>
+                  <div className="text-xs text-slate-400">FY 2024–25</div>
+                </div>
+                <div className="rounded-xl bg-slate-900/60 p-4 col-span-2">
+                  <div className="text-sm text-slate-300">Upcoming</div>
+                  <ul className="mt-3 space-y-2 text-sm">
+                    <li className="flex items-center justify-between">
+                      <span>Withholding Statement</span>
+                      <span className="px-2 py-0.5 rounded bg-amber-500/20 text-amber-200 text-xs">Due Sep 10</span>
+                    </li>
+                    <li className="flex items-center justify-between">
+                      <span>Monthly Sales Tax</span>
+                      <span className="px-2 py-0.5 rounded bg-rose-500/20 text-rose-200 text-xs">Due Sep 15</span>
+                    </li>
+                    <li className="flex items-center justify-between">
+                      <span>Income Tax Return</span>
+                      <span className="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-200 text-xs">Filed</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div className="mt-4 text-xs text-slate-300/70">
+                * Demo UI — actual data after login.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Services */}
+      <section id="services" className="max-w-6xl mx-auto px-4 pb-16">
+        <h2 className="text-2xl md:text-3xl font-bold">Services</h2>
+        <div className="mt-6 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {[
+            ["NTN Registration", "Fast NTN creation with guidance."],
+            ["Tax Return Filing", "Individual & corporate filings with review."],
+            ["Sales Tax & STRN", "Registration and monthly statements."],
+            ["Withholding Statements", "Timely submission & reconciliation."],
+            ["Audit Support", "Pre-audit checks and representation."],
+            ["Advisory", "Custom compliance & planning."],
+          ].map(([title, desc]) => (
+            <div key={title} className="rounded-2xl bg-white/5 ring-1 ring-white/10 p-5 hover:bg-white/10 transition">
+              <div className="text-lg font-semibold">{title}</div>
+              <div className="mt-2 text-sm text-slate-200/80">{desc}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Why us */}
+      <section id="why" className="max-w-6xl mx-auto px-4 pb-20">
+        <div className="rounded-2xl bg-emerald-500/10 ring-1 ring-emerald-400/20 p-6 md:p-8">
+          <h3 className="text-xl md:text-2xl font-bold">Why choose TaxConsult?</h3>
+          <ul className="mt-4 grid md:grid-cols-3 gap-3 text-slate-100/90">
+            <li className="rounded-lg bg-white/5 p-4">Role-based dashboards (Admin/Client)</li>
+            <li className="rounded-lg bg-white/5 p-4">Secure auth & data storage</li>
+            <li className="rounded-lg bg-white/5 p-4">WhatsApp appointments & notifications</li>
+          </ul>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer id="contact" className="border-t border-white/10">
+        <div className="max-w-6xl mx-auto px-4 py-8 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <p className="text-slate-200/70 text-sm">© {new Date().getFullYear()} TaxConsult. All rights reserved.</p>
+          <div className="text-sm">
+            Need help? <a href="mailto:support@taxconsult.com" className="underline">support@taxconsult.com</a>
+          </div>
+        </div>
       </footer>
-    </div>
+    </main>
   );
 }
