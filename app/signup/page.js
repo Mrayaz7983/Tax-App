@@ -2,8 +2,8 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
-import { supabaseWithErrorHandling } from "../lib/supabase";
-import { handleSupabaseError, isValidEmail, validatePassword } from "../lib/utils";
+import { supabaseWithErrorHandling } from "../lib/supabase"; 
+import { handleSupabaseError, isValidEmail, validatePassword } from "../lib/utils"; 
 
 export default function SignupPage() {
   const router = useRouter();
@@ -18,22 +18,21 @@ export default function SignupPage() {
     setError("");
     setLoading(true);
 
-    // Validate inputs
     if (!fullName || !email || !password) {
-      setError("Please fill in all fields");
+      setError("All fields are required");
       setLoading(false);
       return;
     }
 
     if (!isValidEmail(email)) {
-      setError("Please enter a valid email address");
+      setError("Invalid email address");
       setLoading(false);
       return;
     }
 
-    const passwordValidation = validatePassword(password);
-    if (!passwordValidation.isValid) {
-      setError(passwordValidation.message);
+    const passwordCheck = validatePassword(password);
+    if (!passwordCheck.isValid) {
+      setError(passwordCheck.message);
       setLoading(false);
       return;
     }
@@ -42,28 +41,21 @@ export default function SignupPage() {
       const { data, error } = await supabaseWithErrorHandling.auth.signUp({
         email,
         password,
-        options: {
-          data: {
-            full_name: fullName,
-          }
-        }
+        options: { data: { full_name: fullName } }
       });
-
       if (error) throw error;
 
       Swal.fire({
         icon: "success",
-        title: "Signup Successful!",
-        text: "Please check your email to confirm your account.",
-        confirmButtonColor: "#166534",
+        title: "Signup Successful",
+        text: "Please check your email to confirm your account",
+        confirmButtonColor: "#16a34a"
       });
-      
-      // Redirect to login after successful signup
+
       router.push("/login");
     } catch (err) {
       const userFriendlyError = handleSupabaseError(err, "signup");
       setError(userFriendlyError);
-      
       Swal.fire({
         icon: "error",
         title: "Signup Failed",
@@ -76,68 +68,57 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-900 via-green-800 to-green-600 flex items-center justify-center py-16">
-      <div className="bg-white shadow-2xl rounded-2xl p-10 w-full max-w-md">
-        {/* Title */}
-        <h1 className="text-3xl font-extrabold text-center text-green-900 mb-6">
-          Create an Account
-        </h1>
-        <p className="text-center text-gray-500 mb-8">
-          Join our consultancy platform to manage your tax easily.
-        </p>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-tr from-green-900 via-green-700 to-green-500 py-16">
+      <div className="bg-white/70 backdrop-blur-md p-10 rounded-3xl shadow-2xl w-full max-w-md border border-green-200">
+        <h1 className="text-4xl font-extrabold text-center text-green-900 mb-6 animate-fadeInDown">Create an Account</h1>
+        <p className="text-center text-gray-700 mb-8 animate-fadeInUp">Join our platform to manage your taxes easily and securely.</p>
 
-        {/* Signup Form */}
         <form onSubmit={handleSignup} className="space-y-5">
-          <div>
-            <label className="block text-gray-700 font-medium mb-2">Full Name</label>
+          <div className="relative">
             <input
               type="text"
+              placeholder="Full Name"
               value={fullName}
-              onChange={(e) => setFullName(e.target.value)}
-              placeholder="Enter your full name"
+              onChange={e => setFullName(e.target.value)}
               required
-              className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition"
             />
           </div>
-          <div>
-            <label className="block text-gray-700 font-medium mb-2">Email</label>
+          <div className="relative">
             <input
               type="email"
+              placeholder="Email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email"
+              onChange={e => setEmail(e.target.value)}
               required
-              className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition"
             />
           </div>
-          <div>
-            <label className="block text-gray-700 font-medium mb-2">Password</label>
+          <div className="relative">
             <input
               type="password"
+              placeholder="Password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter your password"
+              onChange={e => setPassword(e.target.value)}
               required
-              className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition"
             />
           </div>
 
-          {/* Error Message */}
-          {error && <p className="text-red-600 text-sm">{error}</p>}
+          {error && <p className="text-red-600 text-sm animate-fadeIn">{error}</p>}
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-green-700 hover:bg-green-900 text-white font-semibold py-3 rounded-lg transition disabled:opacity-50"
+            className="w-full bg-green-700 hover:bg-green-800 text-white font-semibold py-3 rounded-xl transition duration-200 disabled:opacity-50"
           >
             {loading ? "Signing up..." : "Sign Up"}
           </button>
         </form>
 
-        {/* Footer */}
-        <p className="text-center text-gray-600 mt-6">
+        <p className="mt-6 text-center text-gray-700">
           Already have an account?{" "}
-          <a href="/login" className="text-green-700 font-semibold hover:underline">
+          <a href="/login" className="text-green-900 font-semibold hover:underline">
             Login
           </a>
         </p>
