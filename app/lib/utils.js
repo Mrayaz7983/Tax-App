@@ -1,16 +1,14 @@
-// Email validation
-export function isValidEmail(email) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-}
+export const isValidEmail = (email) => {
+  return /\S+@\S+\.\S+/.test(email);
+};
 
-// Password validation
-export function validatePassword(password) {
+export const validatePassword = (password) => {
   if (password.length < 6) return { isValid: false, message: "Password must be at least 6 characters" };
-  return { isValid: true, message: "Password is valid" };
-}
+  return { isValid: true };
+};
 
-// Supabase error handler
-export function handleSupabaseError(error, context) {
+export const handleSupabaseError = (error, type) => {
+  if (!error) return "Something went wrong";
   if (error.message) return error.message;
-  return `Error occurred during ${context}`;
-}
+  return `Failed to ${type}`;
+};

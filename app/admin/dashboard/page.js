@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { supabaseWithErrorHandling } from "../../lib/supabase";
+import { supabaseWithErrorHandling } from "../lib/supabase";
 import Link from "next/link";
 import { Users, Calendar, Megaphone, Bell, Briefcase } from "lucide-react";
 
@@ -12,9 +12,9 @@ export default function AdminDashboard() {
   useEffect(() => {
     supabaseWithErrorHandling.auth.getSession().then(session => {
       if (!session) {
-        router.push("/login"); // Not logged in, redirect
+        router.push("/login"); 
       } else {
-        setLoading(false); // Logged in, show dashboard
+        setLoading(false); 
       }
     });
   }, []);

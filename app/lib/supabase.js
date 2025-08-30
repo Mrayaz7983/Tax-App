@@ -11,7 +11,6 @@ export const supabase = createClient(supabaseUrl, supabaseKey, {
   },
 });
 
-// Auth helper
 export const supabaseWithErrorHandling = {
   auth: {
     signUp: async (credentials) => {
@@ -33,6 +32,14 @@ export const supabaseWithErrorHandling = {
         return await supabase.auth.signOut();
       } catch (error) {
         throw error;
+      }
+    },
+    getSession: async () => {
+      try {
+        const { data } = await supabase.auth.getSession();
+        return data.session;
+      } catch (error) {
+        return null;
       }
     },
   },
