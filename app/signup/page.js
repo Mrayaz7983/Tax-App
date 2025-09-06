@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
-import { supabase } from "@/lib/supabase"; // direct supabase client import
+import { supabase } from "@/lib/supabase"; 
 
 export default function SignupPage() {
   const router = useRouter();
@@ -16,20 +16,33 @@ export default function SignupPage() {
     setLoading(true);
 
     try {
+      // ✅ Supabase signup request
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
-        options: { data: { full_name: fullName } }, // custom field
+        options: {
+          data: { full_name: fullName }, // custom field stored in user_metadata
+        },
       });
 
       if (error) throw error;
 
-      Swal.fire({
-        icon: "success",
-        title: "Signup Successful",
-        text: "Please check your email to confirm your account",
-        confirmButtonColor: "#10b981",
-      });
+      // ✅ Handle confirm email flow
+      if (data?.user && !data?.user?.confirmed_at) {
+        Swal.fire({
+          icon: "success",
+          title: "Signup Successful",
+          text: "Please check your email to confirm your account",
+          confirmButtonColor: "#10b981",
+        });
+      } else {
+        Swal.fire({
+          icon: "success",
+          title: "Signup Successful",
+          text: "Your account has been created",
+          confirmButtonColor: "#10b981",
+        });
+      }
 
       router.push("/login");
     } catch (err) {
@@ -71,7 +84,7 @@ export default function SignupPage() {
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            placeholder="Password"
+            placeholder="Password (min 6 chars)"
             className="w-full px-4 py-3 bg-gray-900 text-gray-100 border border-gray-700 rounded-xl"
             required
           />
@@ -85,7 +98,10 @@ export default function SignupPage() {
         </form>
         <p className="mt-6 text-center text-gray-400">
           Already have an account?{" "}
-          <a href="/login" className="text-emerald-500 font-semibold hover:underline">
+          <a
+            href="/login"
+            className="text-emerald-500 font-semibold hover:underline"
+          >
             Login
           </a>
         </p>

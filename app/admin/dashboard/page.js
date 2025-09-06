@@ -1,37 +1,8 @@
 "use client";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { supabaseWithErrorHandling } from "@/lib/supabase";
-
-// import { supabaseWithErrorHandling } from "../lib/supabase";
-
 import Link from "next/link";
 import { Users, Calendar, Megaphone, Bell, Briefcase } from "lucide-react";
 
 export default function AdminDashboard() {
-  const router = useRouter();
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const checkSession = async () => {
-      const session = await supabaseWithErrorHandling.auth.getSession();
-      if (!session) {
-        router.push("/login");
-      } else {
-        setLoading(false);
-      }
-    };
-    checkSession();
-  }, [router]);
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-900 text-white">
-        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-green-500"></div>
-      </div>
-    );
-  }
-
   const sections = [
     {
       title: "Clients",
