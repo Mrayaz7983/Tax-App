@@ -28,7 +28,7 @@ export default function LoginPage() {
         confirmButtonColor: "#10b981",
       });
 
-      router.push("/dashboard"); // apna protected route set karo
+      router.push("/admin/dashboard"); // apna protected route set karo
     } catch (err) {
       Swal.fire({
         icon: "error",

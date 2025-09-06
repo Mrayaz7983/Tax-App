@@ -1,10 +1,12 @@
 "use client";
+
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
-import { Users, Calendar, Megaphone, Bell, Briefcase, LogOut } from "lucide-react";
-import { supabaseWithErrorHandling, getCurrentUser } from "../../lib/supabase";
-import { handleSupabaseError } from "../../lib/utils";
+import { supabaseWithErrorHandling, getCurrentUser } from "@/lib/supabase";
+import { handleSupabaseError } from "@/lib/utils";
+
+// Fonts import karna optional hai
+// import { GeistSans, GeistMono } from "@/lib/fonts";
 
 export default function AdminDashboardLayout({ children }) {
   const [user, setUser] = useState(null);
@@ -18,14 +20,14 @@ export default function AdminDashboardLayout({ children }) {
     const checkAuth = async () => {
       try {
         const currentUser = await getCurrentUser();
-        
+
         if (isMounted) {
-          setUser(currentUser);
-          setLoading(false);
-          
           if (!currentUser) {
             router.push("/login");
+            return;
           }
+          setUser(currentUser);
+          setLoading(false);
         }
       } catch (error) {
         if (isMounted) {
@@ -39,14 +41,12 @@ export default function AdminDashboardLayout({ children }) {
 
     checkAuth();
 
-    // Set up auth state change listener
+    // Listen for auth state changes
     const { data: { subscription } } = supabaseWithErrorHandling.auth.onAuthStateChange(
-      async (event, session) => {
+      (event, session) => {
         if (isMounted) {
           setUser(session?.user ?? null);
-          setLoading(false);
-          
-          if (!session?.user && event !== 'INITIAL_SESSION') {
+          if (!session?.user && event !== "INITIAL_SESSION") {
             router.push("/login");
           }
         }
@@ -65,14 +65,11 @@ export default function AdminDashboardLayout({ children }) {
       router.push("/login");
     } catch (error) {
       const userFriendlyError = handleSupabaseError(error, "logout");
-      console.error("Logout error:", error);
-      
-      // Still redirect to login even if logout fails
+      console.error("Logout error:", error, userFriendlyError);
       router.push("/login");
     }
   };
 
-  // Show loading state
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -84,7 +81,6 @@ export default function AdminDashboardLayout({ children }) {
     );
   }
 
-  // Show error state if authentication failed
   if (authError) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -102,51 +98,26 @@ export default function AdminDashboardLayout({ children }) {
     );
   }
 
-  // Redirect if no user (handled by useEffect, but this is a fallback)
-  if (!user) {
-    return null;
-  }
-
-  const sections = [
-    {
-      title: "Clients",
-      desc: "View and manage client data.",
-      icon: <Users className="w-5 h-5" />,
-      link: "/admin/dashboard/clients",
-    },
-    {
-      title: "Appointments",
-      desc: "Check and book WhatsApp appointments.",
-      icon: <Calendar className="w-5 h-5" />,
-      link: "/admin/dashboard/appointments",
-    },
-    {
-      title: "Notices",
-      desc: "Send and manage notices for clients.",
-      icon: <Megaphone className="w-5 h-5" />,
-      link: "/admin/dashboard/notices",
-    },
-    {
-      title: "Services",
-      desc: "Track and manage tax services.",
-      icon: <Briefcase className="w-5 h-5" />,
-      link: "/admin/dashboard/services",
-    },
-    {
-      title: "Notifications",
-      desc: "Send updates and alerts.",
-      icon: <Bell className="w-5 h-5" />,
-      link: "/admin/dashboard/notifications",
-    },
-  ];
+  if (!user) return null; // fallback
 
   return (
     <html lang="en">
       <body
         suppressHydrationWarning
-        className={`${GeistSans.variable} ${GeistMono.variable} antialiased`}
+        className={`antialiased`} // agar fonts add karne ho, use `${GeistSans.variable} ${GeistMono.variable} antialiased`
       >
-        {children}
+        {/* Optional: Dashboard header */}
+        <header className="bg-green-600 text-white p-4 flex justify-between items-center">
+          <h1 className="text-xl font-semibold">Admin Dashboard</h1>
+          <button
+            onClick={handleLogout}
+            className="bg-red-500 hover:bg-red-600 px-3 py-1 rounded flex items-center space-x-1"
+          >
+            Logout
+          </button>
+        </header>
+
+        <main>{children}</main>
       </body>
     </html>
   );
