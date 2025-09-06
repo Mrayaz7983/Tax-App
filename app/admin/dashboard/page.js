@@ -8,13 +8,13 @@ export default function AdminDashboard() {
       title: "Clients",
       desc: "View and manage client data.",
       icon: <Users className="w-8 h-8 text-sky-400" />,
-      link: "/admin/dashboard/clients", // Make sure folder exists
+      link: "/admin/dashboard/clients",
     },
     {
       title: "Appointments",
       desc: "Check and book WhatsApp appointments.",
       icon: <Calendar className="w-8 h-8 text-sky-400" />,
-      link: "/admin/dashboard/appointments", 
+      link: "/admin/dashboard/appointments",
     },
     {
       title: "Notices",

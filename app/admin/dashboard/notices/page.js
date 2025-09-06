@@ -1,66 +1,129 @@
 "use client";
 import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
+import { supabase } from "@/lib/supabase";
 import { CalendarDays, StickyNote } from "lucide-react";
 
 export default function NoticesPage() {
+  const [instructions, setInstructions] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [newInstruction, setNewInstruction] = useState("");
+
+  // Fetch instructions from Supabase
+  useEffect(() => {
+    const fetchInstructions = async () => {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from("notices") // Your table name in Supabase
+        .select("*")
+        .order("created_at", { ascending: false });
+
+      if (error) console.error("Error fetching notices:", error);
+      else setInstructions(data || []);
+
+      setLoading(false);
+    };
+
+    fetchInstructions();
+  }, []);
+
+  // Save a new instruction
+  const handleSave = async () => {
+    if (!newInstruction) return;
+
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return alert("Please login first.");
+
+    const { data, error } = await supabase
+      .from("notices")
+      .insert([{ content: newInstruction, user_id: user.id }])
+      .select();
+
+    if (error) return console.error("Error saving notice:", error);
+
+    setInstructions([data[0], ...instructions]);
+    setNewInstruction("");
+  };
+
   return (
     <motion.div
-      className="p-6 bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl shadow-lg"
+      className="p-10 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-700 min-h-screen text-white"
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
     >
-      {/* Header */}
-      <motion.h1
-        className="text-3xl font-extrabold text-gray-800 mb-4 flex items-center gap-2"
-        initial={{ opacity: 0, x: -50 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ delay: 0.3 }}
-      >
-        <StickyNote className="w-7 h-7 text-blue-600" />
-        Notice Board
-      </motion.h1>
+      <div className="max-w-6xl mx-auto mb-10">
+        <h1 className="text-4xl font-extrabold text-teal-400 flex items-center gap-3">
+          <StickyNote className="w-8 h-8 text-teal-400" />
+          Notice Board
+        </h1>
+        <p className="text-gray-300 mt-2 text-lg">
+          Manage and schedule notices and instructions for your clients.
+        </p>
+      </div>
 
-      <motion.p
-        className="text-gray-600 mb-8"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.5 }}
-      >
-        Yahan par Calendar aur Instructions ka UI hoga.
-      </motion.p>
-
-      {/* Calendar + Instructions Layout */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        
-        {/* Calendar Section */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+        {/* Calendar Card */}
         <motion.div
-          className="p-5 bg-white rounded-xl shadow-md border border-gray-200 flex flex-col items-center"
-          initial={{ opacity: 0, scale: 0.9 }}
+          className="bg-slate-800 rounded-2xl shadow-lg border border-slate-700 p-6 flex flex-col items-start transition-transform hover:scale-105 hover:shadow-2xl"
+          initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.6 }}
+          transition={{ delay: 0.2 }}
         >
-          <CalendarDays className="w-10 h-10 text-green-600 mb-3" />
-          <h2 className="text-xl font-semibold text-gray-800">Calendar</h2>
-          <p className="text-gray-500 text-sm mt-2">Yahan par calendar component add hoga.</p>
+          <div className="flex items-center gap-3 mb-4">
+            <CalendarDays className="w-10 h-10 text-teal-400" />
+            <h2 className="text-xl font-semibold text-gray-100">Calendar</h2>
+          </div>
+          <p className="text-gray-400 text-sm">
+            View upcoming events and scheduled notices. Add new events to keep your clients informed.
+          </p>
         </motion.div>
 
-        {/* Instructions Section */}
+        {/* Instructions Card */}
         <motion.div
-          className="p-5 bg-white rounded-xl shadow-md border border-gray-200"
-          initial={{ opacity: 0, scale: 0.9 }}
+          className="bg-slate-800 rounded-2xl shadow-lg border border-slate-700 p-6 flex flex-col transition-transform hover:scale-105 hover:shadow-2xl"
+          initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.8 }}
+          transition={{ delay: 0.4 }}
         >
-          <h2 className="text-xl font-semibold text-gray-800 mb-2">Instructions</h2>
+          <div className="flex items-center gap-3 mb-4">
+            <StickyNote className="w-10 h-10 text-teal-400" />
+            <h2 className="text-xl font-semibold text-teal-400">Instructions</h2>
+          </div>
+
+          {/* Input */}
           <textarea
-            placeholder="Likho yahan instructions..."
-            className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none text-gray-700"
-            rows="6"
+            placeholder="Add instructions for your clients..."
+            className="w-full p-3 border border-slate-700 rounded-lg bg-slate-900 text-gray-100 focus:ring-2 focus:ring-teal-400 focus:outline-none resize-none"
+            rows={6}
+            value={newInstruction}
+            onChange={(e) => setNewInstruction(e.target.value)}
           />
-          <button className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition">
-            Save Instructions
+
+          <button
+            className="mt-4 px-4 py-2 bg-teal-400 text-slate-900 rounded-lg shadow hover:bg-teal-500 transition"
+            onClick={handleSave}
+          >
+            Save Instruction
           </button>
+
+          {/* List of instructions */}
+          <div className="mt-6 space-y-4">
+            {loading ? (
+              <p className="text-gray-400">Loading instructions...</p>
+            ) : instructions.length === 0 ? (
+              <p className="text-gray-400">No instructions found.</p>
+            ) : (
+              instructions.map((instr) => (
+                <div
+                  key={instr.id}
+                  className="bg-slate-700 p-4 rounded-lg shadow border border-slate-600 text-gray-100"
+                >
+                  {instr.content}
+                </div>
+              ))
+            )}
+          </div>
         </motion.div>
       </div>
     </motion.div>
