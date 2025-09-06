@@ -3,8 +3,8 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Users, Calendar, Megaphone, Bell, Briefcase, LogOut } from "lucide-react";
-import { supabaseWithErrorHandling, getCurrentUser } from "../../lib/supabase";
-import { handleSupabaseError } from "../../lib/utils";
+import { supabaseWithErrorHandling, getCurrentUser } from "@/lib/supabase";
+import { handleSupabaseError } from "@/lib/utils";
 
 export default function AdminDashboardLayout({ children }) {
   const [user, setUser] = useState(null);
