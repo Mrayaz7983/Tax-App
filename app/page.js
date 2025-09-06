@@ -43,17 +43,20 @@ export default function Home() {
             </p>
             <div className="mt-8 flex flex-wrap gap-4">
               <a
-                href="/signup"
+                href="/client/signup"
                 className="px-6 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-600 font-semibold transition"
               >
                 Get Started
               </a>
               <a
-                href="/login"
+                href="/client/login"
+                
+                
                 className="px-6 py-3 rounded-xl bg-white/10 hover:bg-white/20 font-semibold transition"
               >
                 Login
               </a>
+              
             </div>
           </div>
 
