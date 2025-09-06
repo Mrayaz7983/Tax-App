@@ -3,8 +3,8 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Users, Calendar, Megaphone, Bell, Briefcase, LogOut } from "lucide-react";
-import { supabaseWithErrorHandling, getCurrentUser } from "@/lib/supabase";
-import { handleSupabaseError } from "@/lib/utils";
+import { supabaseWithErrorHandling, getCurrentUser } from "../../lib/supabase";
+import { handleSupabaseError } from "../../lib/utils";
 
 export default function AdminDashboardLayout({ children }) {
   const [user, setUser] = useState(null);
@@ -141,44 +141,13 @@ export default function AdminDashboardLayout({ children }) {
   ];
 
   return (
-    <div className="min-h-screen flex bg-gray-100">
-      {/* Sidebar */}
-      <aside className="w-64 bg-green-900 text-white flex flex-col p-6 space-y-6">
-        <h2 className="text-2xl font-bold tracking-wide">Admin Panel</h2>
-        <nav className="flex flex-col space-y-3">
-          {sections.map((item, index) => (
-            <Link
-              key={index}
-              href={item.link}
-              className="flex items-center space-x-2 p-2 rounded hover:bg-green-700 transition"
-            >
-              {item.icon}
-              <span>{item.title}</span>
-            </Link>
-          ))}
-        </nav>
-        <button 
-          onClick={handleLogout}
-          className="flex items-center space-x-2 p-2 rounded mt-auto hover:bg-red-600 transition"
-        >
-          <LogOut size={18} />
-          <span>Logout</span>
-        </button>
-      </aside>
-
-      {/* Main Content */}
-      <div className="flex-1 p-6">
-        {/* Topbar */}
-        <header className="flex justify-between items-center bg-white shadow p-4 rounded mb-6">
-          <h1 className="text-xl font-semibold text-gray-800">Admin Dashboard</h1>
-          <span className="text-gray-600">
-            Welcome, {user.user_metadata?.full_name || user.email} 👋
-          </span>
-        </header>
-
-        {/* Page Content */}
-        <main className="bg-white shadow rounded p-6">{children}</main>
-      </div>
-    </div>
+    <html lang="en">
+      <body
+        suppressHydrationWarning
+        className={`${GeistSans.variable} ${GeistMono.variable} antialiased`}
+      >
+        {children}
+      </body>
+    </html>
   );
 }
