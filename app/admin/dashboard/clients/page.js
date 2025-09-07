@@ -6,6 +6,7 @@ import { supabase } from "@/lib/supabase";
 export default function ClientsPage() {
   const [clients, setClients] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [editingId, setEditingId] = useState(null); // <-- new state
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -47,15 +48,43 @@ export default function ClientsPage() {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return alert("Please login first.");
 
-    const { data, error } = await supabase
-      .from("clients")
-      .insert([{ ...formData, user_id: user.id }])
-      .select();
+    if (editingId) {
+      // 🔹 Update existing client
+      const { data, error } = await supabase
+        .from("clients")
+        .update(formData)
+        .eq("id", editingId)
+        .select();
 
-    if (error) return console.error("Error saving client:", error);
+      if (error) return console.error("Error updating client:", error);
 
-    setClients([data[0], ...clients]);
+      setClients(clients.map((c) => (c.id === editingId ? data[0] : c)));
+      setEditingId(null);
+    } else {
+      // 🔹 Insert new client
+      const { data, error } = await supabase
+        .from("clients")
+        .insert([{ ...formData, user_id: user.id }])
+        .select();
+
+      if (error) return console.error("Error saving client:", error);
+
+      setClients([data[0], ...clients]);
+    }
+
+    // Reset form after save/update
     setFormData({ name: "", email: "", phone: "", ntn: "", address: "" });
+  };
+
+  const handleEdit = (client) => {
+    setFormData({
+      name: client.name,
+      email: client.email,
+      phone: client.phone,
+      ntn: client.ntn,
+      address: client.address,
+    });
+    setEditingId(client.id);
   };
 
   const handleDelete = async (id) => {
@@ -85,14 +114,16 @@ export default function ClientsPage() {
         Client Management
       </motion.h1>
 
-      {/* Add Client Form */}
+      {/* Add/Edit Client Form */}
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.6 }}
         className="bg-gray-800 rounded-2xl shadow-xl p-8 mb-10 border border-gray-700 max-w-5xl mx-auto"
       >
-        <h2 className="text-2xl font-semibold mb-6 text-gray-100">Add New Client</h2>
+        <h2 className="text-2xl font-semibold mb-6 text-gray-100">
+          {editingId ? "Edit Client" : "Add New Client"}
+        </h2>
         <form
           className="grid grid-cols-1 md:grid-cols-2 gap-6"
           onSubmit={handleSave}
@@ -112,7 +143,7 @@ export default function ClientsPage() {
             type="submit"
             className="col-span-2 mt-3 bg-teal-500 hover:bg-teal-600 text-gray-900 py-3 rounded-lg font-semibold transition shadow-md"
           >
-            Save Client
+            {editingId ? "Update Client" : "Save Client"}
           </button>
         </form>
       </motion.div>
@@ -164,7 +195,10 @@ export default function ClientsPage() {
                   <td className="p-4">{c.ntn}</td>
                   <td className="p-4">{c.address}</td>
                   <td className="p-4 flex gap-3">
-                    <button className="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-gray-900 rounded-lg font-semibold transition shadow-sm">
+                    <button
+                      onClick={() => handleEdit(c)}
+                      className="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-gray-900 rounded-lg font-semibold transition shadow-sm"
+                    >
                       Edit
                     </button>
                     <button
